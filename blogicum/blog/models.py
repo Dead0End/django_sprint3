@@ -7,7 +7,6 @@ from core.models import BaseModel, BaseTitle
 User = get_user_model()
 
 
-
 class Location(BaseModel):
     """Местоположение"""
 
