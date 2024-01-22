@@ -6,13 +6,12 @@ from core.models import BaseModel, BaseTitle
 
 User = get_user_model()
 
-max_length = 256
 
 
 class Location(BaseModel):
     """Местоположение"""
 
-    name = models.CharField(max_length, verbose_name="Название места")
+    name = models.CharField(max_length=256, verbose_name="Название места")
 
     class Meta:
         verbose_name = 'местоположение'
