@@ -81,7 +81,7 @@ class Post(BaseModel, BaseTitle):
     def str(self):
         return self.title
 
-    def get_published_categories(cls):
+    def get_published_categories(self, cls):
         return cls.objects.filter(
             is_published=True
         )
