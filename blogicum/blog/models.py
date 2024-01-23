@@ -16,9 +16,6 @@ class Location(BaseModel):
         verbose_name = 'местоположение'
         verbose_name_plural = 'Местоположения'
 
-    def str(self):
-        return self.name
-
 
 class Category(BaseModel, BaseTitle):
     """Категория"""
@@ -36,7 +33,7 @@ class Category(BaseModel, BaseTitle):
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
 
-    def str(self):
+    def __str__(self):
         return self.title
 
 
@@ -86,9 +83,6 @@ class Post(BaseModel, BaseTitle):
 
 
 class Category(models.Model):
-
-    def str(self):
-        return self.title
 
     def get_published_categories(cls):
         return cls.objects.filter(
