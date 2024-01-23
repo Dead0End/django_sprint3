@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from constants import m_length, date_now
+from constants import m_length
 from core.models import BaseModel, BaseTitle
 
 
@@ -83,6 +83,7 @@ class Post(BaseModel, BaseTitle):
 
     def __str__(self):
         return self.title
+
 
 class Category(models.Model):
 

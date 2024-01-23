@@ -16,7 +16,8 @@ def index(request):
 
 def post_detail(request, post_id):
     """Подробное описание выбранной записи"""
-    post = get_object_or_404(get_posts().prefetch_related('category'), pk=post_id)
+    post = get_object_or_404(
+        get_posts().prefetch_related('category'), pk=post_id)
     context = {'post': post}
     return render(request, 'blog/detail.html', context)
 
