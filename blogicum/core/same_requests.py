@@ -1,10 +1,9 @@
 from blog.models import Post, Category
-from django.utils import timezone
+from constants import date_now
 
 
 def get_posts():
     """Вернуть результат запроса к таблице blog_post."""
-    date_now = timezone.now()
     query_set = (
         Post.objects.select_related(
             "category",
