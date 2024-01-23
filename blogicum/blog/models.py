@@ -42,7 +42,6 @@ class Category(BaseModel, BaseTitle):
 
 class Post(BaseModel, BaseTitle):
 
-    """Публикация."""
     def get_published_posts(cls):
         return cls.objects.select_related(
             "category",
