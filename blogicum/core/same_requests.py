@@ -3,7 +3,6 @@ from constants import date_now
 
 
 def get_posts():
-    """Вернуть результат запроса к таблице blog_post."""
     query_set = (
         Post.objects.select_related(
             "category",
@@ -20,7 +19,6 @@ def get_posts():
 
 
 def get_category():
-    """Вернуть результат запроса к таблице blog_category."""
     query_set = Category.objects.filter(
         is_published=True
     )
