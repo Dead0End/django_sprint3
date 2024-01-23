@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-
+from blogicum.const import MAX_RES_INDEX, MAX_RES_CATEGORY_POSTS
 from core.same_requests import get_posts, get_category
-from constants import MAX_RES_CATEGORY_POSTS, MAX_RES_INDEX
 
 
 def index(request):
@@ -13,15 +12,15 @@ def index(request):
 
 def post_detail(request, post_id):
     """Подробное описание выбранной записи"""
-    post = get_object_or_404(get_posts(), pk=post_id)
+    post = get_object_or_404(get_posts(), pk=post_id,)
     context = {'post': post}
     return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, category_slug):
     """Отображение публикации по категории"""
-    category = get_object_or_404(get_category(), slug=category_slug)
-    post_list = get_posts().filter(
-        category=category).order_by('-pub_date')[:MAX_RES_CATEGORY_POSTS]
+    category = get_object_or_404(get_category(), slug=category_slug, )
+    post_list = get_posts().filter(category=category).order_by(
+        '-pub_date')[:MAX_RES_CATEGORY_POSTS]
     context = {'category': category, 'post_list': post_list}
-    return render(request, 'blog/category_posts.html', context)
+    return render(request, 'blog/category.html', context)
