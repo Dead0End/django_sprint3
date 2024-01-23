@@ -81,5 +81,5 @@ class Post(BaseModel, BaseTitle):
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
 
-    def __str__(self): 
+    def __str__(self):
         return self.title
