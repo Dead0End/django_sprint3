@@ -1,14 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from constants import m_length
+from core.models import BaseModel, BaseTitle
+
 
 User = get_user_model()
 
 
-class Location(models.Model):
+class Location(BaseModel):
     """Местоположение"""
 
-    name = models.CharField(max_length=m_length, verbose_name='Название места')
+    name = models.CharField(m_length, verbose_name="Название места")
 
     class Meta:
         verbose_name = 'местоположение'
@@ -18,11 +20,11 @@ class Location(models.Model):
         return self.name
 
 
-class Category(models.Model):
+class Category(BaseModel, BaseTitle):
     """Категория"""
 
     description = models.TextField(verbose_name='Описание')
-    slug = models.SlugField(verbose_name='Идентификатор',
+    slug = models.SlugField(verbose_name="Идентификатор",
                             unique=True,
                             help_text=(
                                 'Идентификатор страницы для URL; '
@@ -38,7 +40,7 @@ class Category(models.Model):
         return self.title
 
 
-class Post(models.Model):
+class Post(BaseModel, BaseTitle):
     """Публикация."""
 
     text = models.TextField(verbose_name='Текст')
@@ -62,7 +64,7 @@ class Post(models.Model):
         related_name='posts',
     )
     category = models.ForeignKey(
-        'Category',  # Use string reference to avoid circular import
+        Category,
         on_delete=models.SET_NULL,
         null=True,
         related_name='posts',
