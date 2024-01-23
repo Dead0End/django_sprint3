@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-
+from constants import m_length,date_now
 from core.models import BaseModel, BaseTitle
 
 
@@ -10,7 +10,7 @@ User = get_user_model()
 class Location(BaseModel):
     """Местоположение"""
 
-    name = models.CharField(max_length=256, verbose_name="Название места")
+    name = models.CharField(m_length, verbose_name='Название места')
 
     class Meta:
         verbose_name = 'местоположение'
@@ -24,7 +24,7 @@ class Category(BaseModel, BaseTitle):
     """Категория"""
 
     description = models.TextField(verbose_name='Описание')
-    slug = models.SlugField(verbose_name="Идентификатор",
+    slug = models.SlugField(verbose_name='Идентификатор',
                             unique=True,
                             help_text=(
                                 'Идентификатор страницы для URL; '
@@ -42,6 +42,14 @@ class Category(BaseModel, BaseTitle):
 
 class Post(BaseModel, BaseTitle):
     """Публикация."""
+    def get_published_posts(cls):
+        return cls.objects.select_related(
+            "category",
+            "location",
+            "author",
+        ).filter
+        
+
 
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(verbose_name='Дата и время публикации',
@@ -77,3 +85,10 @@ class Post(BaseModel, BaseTitle):
 
     def __str__(self):
         return self.title
+
+class Category(models.Model):
+
+    def get_published_categories(cls):
+        return cls.objects.filter(
+            is_published=True
+        )
