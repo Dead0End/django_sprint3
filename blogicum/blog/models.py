@@ -81,5 +81,7 @@ class Post(BaseModel, BaseTitle):
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
 
-    def str(self):
-        return self.title
+    def get_published_categories(self, cls):
+        return cls.objects.filter(
+            is_published=True
+        )
