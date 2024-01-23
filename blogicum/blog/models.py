@@ -42,7 +42,7 @@ class Category(BaseModel, BaseTitle):
 
 class Post(BaseModel, BaseTitle):
 
-    def get_published_posts(self, cls):
+    def get_published_posts(cls):
         return cls.objects.select_related(
             "category",
             "location",
