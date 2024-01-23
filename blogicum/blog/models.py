@@ -77,4 +77,3 @@ class Post(BaseModel, BaseTitle):
 
     def __str__(self):
         return self.title
-    
