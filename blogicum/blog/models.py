@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from constants import m_length
 from core.models import BaseModel, BaseTitle
-
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -24,13 +24,15 @@ class Category(BaseModel, BaseTitle):
     """Категория"""
 
     description = models.TextField(verbose_name='Описание')
-    slug = models.SlugField(verbose_name='Идентификатор',
-                            unique=True,
-                            help_text=(
-                                'Идентификатор страницы для URL; '
-                                'разрешены символы латиницы, '
-                                'цифры, дефис и подчёркивание.'
-                            ),)
+    slug = models.SlugField(
+        verbose_name='Идентификатор',
+        unique=True,
+        help_text=(
+            'Идентификатор страницы для URL; '
+            'разрешены символы латиницы, '
+            'цифры, дефис и подчёркивание.'
+        ),
+    )
 
     class Meta:
         verbose_name = 'категория'
@@ -42,19 +44,25 @@ class Category(BaseModel, BaseTitle):
 
 class Post(BaseModel, BaseTitle):
     """Публикация."""
+
+    @classmethod
     def get_published_posts(cls):
         return cls.objects.select_related(
             "category",
             "location",
             "author",
-        ).filter
+        ).filter(pub_date__lte=timezone.now(),
+                 is_published=True, category__is_published=True)
 
     text = models.TextField(verbose_name='Текст')
-    pub_date = models.DateTimeField(verbose_name='Дата и время публикации',
-                                    help_text=(
-                                        'Если установить дату и время '
-                                        'в будущем — можно делать отложенные '
-                                        'публикации.'),)
+    pub_date = models.DateTimeField(
+        verbose_name='Дата и время публикации',
+        help_text=(
+            'Если установить дату и время '
+            'в будущем — можно делать отложенные '
+            'публикации.'
+        ),
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -83,11 +91,3 @@ class Post(BaseModel, BaseTitle):
 
     def __str__(self):
         return self.title
-
-
-class Category(models.Model):
-
-    def get_published_categories(cls):
-        return cls.objects.filter(
-            is_published=True
-        )
