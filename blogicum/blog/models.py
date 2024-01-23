@@ -48,8 +48,6 @@ class Post(BaseModel, BaseTitle):
             "location",
             "author",
         ).filter
-g
-
 
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(verbose_name='Дата и время публикации',

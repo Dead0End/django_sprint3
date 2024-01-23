@@ -9,7 +9,7 @@ from constants import MAX_RES_INDEX
 def index(request):
     """Главная страница, Лента записей"""
     post_list = get_posts().order_by("-pub_date")
-    [:MAX_RES_INDEX].prefetch_related('category')
+    [MAX_RES_INDEX].prefetch_related('category')
     context = {"post_list": post_list}
     return render(request, 'blog/index.html', context)
 
