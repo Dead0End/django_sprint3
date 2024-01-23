@@ -2,12 +2,14 @@ from django.shortcuts import render, get_object_or_404
 
 from core.same_requests import get_posts, get_category
 
-from constants import MAX_RES_CATEGORY_POSTS, MAX_RES_INDEX
+from constants import MAX_RES_CATEGORY_POSTS
+from constants import MAX_RES_INDEX
 
 
 def index(request):
     """Главная страница, Лента записей"""
-    post_list = get_posts().order_by("-pub_date")[:MAX_RES_INDEX].prefetch_related('category')
+    post_list = get_posts().order_by("-pub_date")
+    [:MAX_RES_INDEX].prefetch_related('category')
     context = {"post_list": post_list}
     return render(request, 'blog/index.html', context)
 

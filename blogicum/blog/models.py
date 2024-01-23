@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from constants import m_length,date_now
+from constants import m_length, date_now
 from core.models import BaseModel, BaseTitle
 
 
@@ -48,7 +48,7 @@ class Post(BaseModel, BaseTitle):
             "location",
             "author",
         ).filter
-        
+g
 
 
     text = models.TextField(verbose_name='Текст')
