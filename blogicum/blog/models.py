@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-
+from constants import m_length
 from core.models import BaseModel, BaseTitle
 
 
@@ -10,7 +10,7 @@ User = get_user_model()
 class Location(BaseModel):
     """Местоположение"""
 
-    name = models.CharField(max_length=256, verbose_name="Название места")
+    name = models.CharField(m_length, verbose_name="Название места")
 
     class Meta:
         verbose_name = 'местоположение'
