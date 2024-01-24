@@ -1,36 +1,34 @@
-from django.contrib.auth import get_user_model
 from django.db import models
-from constants import m_length
-from core.models import BaseModel, BaseTitle
+from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
 
 
-class Location(BaseModel):
-    """Местоположение"""
-
-    name = models.CharField(m_length, verbose_name="Название места")
+class BaseModel(models.Model):
+    is_published = models.BooleanField(
+        default=True,
+        verbose_name='Опубликовано',
+        help_text='Снимите галочку, чтобы скрыть публикацию.')
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Добавлено')
 
     class Meta:
-        verbose_name = 'местоположение'
-        verbose_name_plural = 'Местоположения'
-
-    def __str__(self):
-        return self.name
+        abstract = True
 
 
-class Category(BaseModel, BaseTitle):
-    """Категория"""
-
-    description = models.TextField(verbose_name='Описание')
-    slug = models.SlugField(verbose_name="Идентификатор",
-                            unique=True,
-                            help_text=(
-                                'Идентификатор страницы для URL; '
-                                'разрешены символы латиницы, '
-                                'цифры, дефис и подчёркивание.'
-                            ),)
+class Category(BaseModel):
+    title = models.CharField(
+        max_length=256,
+        verbose_name='Заголовок')
+    description = models.TextField(
+        verbose_name='Описание')
+    slug = models.SlugField(
+        unique=True,
+        verbose_name='Идентификатор',
+        help_text='Идентификатор страницы для URL; разрешены символы латиницы,'
+                  + ' цифры, дефис и подчёркивание.')
 
     class Meta:
         verbose_name = 'категория'
@@ -40,36 +38,42 @@ class Category(BaseModel, BaseTitle):
         return self.title
 
 
-class Post(BaseModel, BaseTitle):
-    """Публикация."""
+class Location(BaseModel):
+    name = models.CharField(max_length=256, verbose_name='Название места')
 
-    text = models.TextField(verbose_name='Текст')
-    pub_date = models.DateTimeField(verbose_name='Дата и время публикации',
-                                    help_text=(
-                                        'Если установить дату и время '
-                                        'в будущем — можно делать отложенные '
-                                        'публикации.'),)
+    class Meta:
+        verbose_name = 'местоположение'
+        verbose_name_plural = 'Местоположения'
+
+    def __str__(self):
+        return self.name
+
+
+class Post(BaseModel):
+    title = models.CharField(
+        max_length=256,
+        verbose_name='Заголовок')
+    text = models.TextField(
+        verbose_name='Текст')
+    pub_date = models.DateTimeField(
+        verbose_name='Дата и время публикации',
+        help_text='Если установить дату и время в будущем — можно '
+                  + 'делать отложенные публикации.')
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Автор публикации',
-        related_name='posts',
-    )
+        verbose_name='Автор публикации')
     location = models.ForeignKey(
         Location,
         on_delete=models.SET_NULL,
-        blank=True,
         null=True,
-        verbose_name='Местоположение',
-        related_name='posts',
-    )
+        verbose_name='Местоположение')
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='posts',
-        verbose_name='Категория',
-    )
+        blank=False,
+        verbose_name='Категория')
 
     class Meta:
         verbose_name = 'публикация'
