@@ -1,5 +1,4 @@
-import datetime
-
+from blogicum.constants import now
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 
@@ -10,7 +9,7 @@ POSTS_LIMIT = 5
 
 def index(request):
     template = 'blog/index.html'
-    now = datetime.datetime.now()
+    now
     posts = Post.objects.select_related(
         'category',
         'location',
@@ -29,7 +28,7 @@ def index(request):
 
 def post_detail(request, post_id):
     template = 'blog/detail.html'
-    now = datetime.datetime.now()
+    now
     queryset = Post.objects.select_related(
         'category',
         'location',
@@ -46,13 +45,12 @@ def post_detail(request, post_id):
 
 def category_posts(request, category_slug):
     template = 'blog/category.html'
-    now = datetime.datetime.now()
+    now
     category = get_object_or_404(
         Category,
         slug=category_slug,
         is_published=True)
     category_posts = Post.objects.select_related(
-        'category',
         'location',
         'author'
     ).filter(
