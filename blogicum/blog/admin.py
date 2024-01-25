@@ -51,7 +51,6 @@ class LocationAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
 
 
-# Register your models here.
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Location, LocationAdmin)
